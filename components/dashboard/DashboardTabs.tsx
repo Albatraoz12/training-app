@@ -84,7 +84,6 @@ export default function DashboardTabs({ favorites, lists }: Props) {
           </div>
         )}
       </TabsContent>
-
     </Tabs>
   );
 }
