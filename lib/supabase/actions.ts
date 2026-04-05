@@ -111,6 +111,20 @@ export async function addExerciseToList(listId: string, exerciseId: string): Pro
   if (error && error.code !== '23505') throw new Error(error.message)
 }
 
+export async function renameList(listId: string, name: string): Promise<void> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Not authenticated')
+
+  const { error } = await supabase
+    .from('exercise_lists')
+    .update({ name })
+    .eq('id', listId)
+    .eq('user_id', user.id)
+
+  if (error) throw new Error(error.message)
+}
+
 export async function removeExerciseFromList(listId: string, exerciseId: string): Promise<void> {
   const supabase = await createClient()
   const { error } = await supabase

@@ -6,6 +6,7 @@ import { fetchListItems } from '@/lib/supabase/actions'
 import { fetchExerciseById } from '@/lib/exercisedb/actions'
 import type { Exercise } from '@/lib/exercisedb/types'
 import RemoveFromListButton from '@/components/exercises/RemoveFromListButton'
+import RenameListInput from '@/components/exercises/RenameListInput'
 
 type Props = {
   params: Promise<{ id: string }>
@@ -46,7 +47,7 @@ export default async function ListPage({ params }: Props) {
           <ChevronLeft className="h-4 w-4" />
           Tillbaka till dashboard
         </Link>
-        <h1 className="text-2xl font-bold">{list.name}</h1>
+        <RenameListInput listId={id} initialName={list.name} />
         <p className="text-sm text-muted-foreground">
           {exercises.length} {exercises.length === 1 ? 'övning' : 'övningar'}
         </p>
@@ -57,7 +58,7 @@ export default async function ListPage({ params }: Props) {
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {exercises.map((ex) => (
-            <div key={ex.id} className="group relative">
+            <div key={ex.id} className="relative">
               <Link
                 href={`/search/${ex.id}`}
                 className="flex flex-col overflow-hidden rounded-xl border border-border transition-shadow hover:shadow-md"
