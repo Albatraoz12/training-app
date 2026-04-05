@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { fetchListItems } from '@/lib/supabase/actions'
 import { fetchExerciseById } from '@/lib/exercisedb/actions'
 import type { Exercise } from '@/lib/exercisedb/types'
+import RemoveFromListButton from '@/components/exercises/RemoveFromListButton'
 
 type Props = {
   params: Promise<{ id: string }>
@@ -56,20 +57,22 @@ export default async function ListPage({ params }: Props) {
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {exercises.map((ex) => (
-            <Link
-              key={ex.id}
-              href={`/search/${ex.id}`}
-              className="group flex flex-col overflow-hidden rounded-xl border border-border transition-shadow hover:shadow-md"
-            >
-              <img
-                src={ex.gifUrl}
-                alt={ex.name}
-                className="h-36 w-full object-cover"
-              />
-              <p className="line-clamp-2 px-2 py-2 text-xs font-medium capitalize group-hover:underline">
-                {ex.name}
-              </p>
-            </Link>
+            <div key={ex.id} className="group relative">
+              <Link
+                href={`/search/${ex.id}`}
+                className="flex flex-col overflow-hidden rounded-xl border border-border transition-shadow hover:shadow-md"
+              >
+                <img
+                  src={ex.gifUrl}
+                  alt={ex.name}
+                  className="h-36 w-full object-cover"
+                />
+                <p className="line-clamp-2 px-2 py-2 text-xs font-medium capitalize hover:underline">
+                  {ex.name}
+                </p>
+              </Link>
+              <RemoveFromListButton listId={id} exerciseId={ex.id} />
+            </div>
           ))}
         </div>
       )}
