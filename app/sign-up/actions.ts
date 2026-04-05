@@ -24,21 +24,16 @@ export async function signUp(prevState: State, formData: FormData): Promise<Stat
 
   const supabase = await createClient()
 
-  const { data, error: signUpError } = await supabase.auth.signUp({ email, password })
+  const { error: signUpError } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { first_name: firstName, last_name: lastName, age, gender },
+    },
+  })
 
   if (signUpError) {
     return { error: signUpError.message }
-  }
-
-  if (data.user) {
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .update({ first_name: firstName, last_name: lastName, age, gender })
-      .eq('id', data.user.id)
-
-    if (profileError) {
-      return { error: profileError.message }
-    }
   }
 
   redirect('/')
