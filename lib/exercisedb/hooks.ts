@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import {
   fetchExercises,
@@ -68,9 +69,15 @@ export function useExerciseById(id: string) {
 }
 
 export function useExerciseSearch() {
-  const [query, setQuery] = useState('')
-  const [search, setSearch] = useState('')
-  const [bodyPart, setBodyPart] = useState('')
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const search = searchParams.get('q') ?? ''
+  const bodyPart = searchParams.get('bodyPart') ?? ''
+
+  // Lokalt state enbart för det kontrollerade input-fältet
+  const [query, setQuery] = useState(search)
 
   const nameQuery = useExercisesByName(search)
   const bodyPartQuery = useExercisesByBodyPart(bodyPart)
@@ -80,14 +87,16 @@ export function useExerciseSearch() {
   function submitSearch(value: string) {
     const q = value.trim()
     if (!q) return
-    setBodyPart('')
-    setSearch(q)
+    const params = new URLSearchParams()
+    params.set('q', q)
+    router.push(`${pathname}?${params.toString()}`)
   }
 
   function selectBodyPart(value: string | null) {
-    setBodyPart(value ?? '')
-    setSearch('')
+    const params = new URLSearchParams()
+    if (value) params.set('bodyPart', value)
     setQuery('')
+    router.push(`${pathname}?${params.toString()}`)
   }
 
   return {

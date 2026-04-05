@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import ExerciseSearch from '@/components/exercises/ExerciseSearch'
 
 export default function SearchPage() {
@@ -9,7 +10,9 @@ export default function SearchPage() {
           Sök på namn eller filtrera på muskelgrupp.
         </p>
       </div>
-      <ExerciseSearch />
+      <Suspense>
+        <ExerciseSearch />
+      </Suspense>
     </main>
   )
 }
