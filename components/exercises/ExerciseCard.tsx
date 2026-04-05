@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { Exercise } from '@/lib/exercisedb/types'
 import {
   Card,
@@ -12,7 +13,8 @@ type Props = {
 
 export default function ExerciseCard({ exercise }: Props) {
   return (
-    <Card className="overflow-hidden">
+    <Link href={`/search/${exercise.id}`} className="group">
+    <Card className="overflow-hidden transition-shadow group-hover:shadow-md">
       <img
         src={exercise.gifUrl}
         alt={exercise.name}
@@ -33,5 +35,6 @@ export default function ExerciseCard({ exercise }: Props) {
         </span>
       </CardContent>
     </Card>
+    </Link>
   )
 }
