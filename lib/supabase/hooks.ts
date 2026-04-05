@@ -30,6 +30,8 @@ import {
   toggleFavorite,
   createList,
   addExerciseToList,
+  removeExerciseFromList,
+  fetchListsContainingExercise,
 } from './actions'
 
 export function useFavorites() {
@@ -84,8 +86,32 @@ export function useCreateList() {
 }
 
 export function useAddToList() {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: ({ listId, exerciseId }: { listId: string; exerciseId: string }) =>
       addExerciseToList(listId, exerciseId),
+    onSuccess: (_data, { exerciseId }) => {
+      queryClient.invalidateQueries({ queryKey: ['listMembership', exerciseId] })
+    },
+  })
+}
+
+export function useExerciseListMembership(exerciseId: string) {
+  return useQuery({
+    queryKey: ['listMembership', exerciseId],
+    queryFn: () => fetchListsContainingExercise(exerciseId),
+  })
+}
+
+export function useRemoveFromList() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ listId, exerciseId }: { listId: string; exerciseId: string }) =>
+      removeExerciseFromList(listId, exerciseId),
+    onSuccess: (_data, { exerciseId }) => {
+      queryClient.invalidateQueries({ queryKey: ['listMembership', exerciseId] })
+    },
   })
 }

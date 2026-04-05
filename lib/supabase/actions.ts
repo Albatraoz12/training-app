@@ -87,6 +87,20 @@ export async function fetchUserLists(): Promise<ExerciseList[]> {
   }))
 }
 
+export async function fetchListsContainingExercise(exerciseId: string): Promise<string[]> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return []
+
+  const { data } = await supabase
+    .from('exercise_list_items')
+    .select('list_id, exercise_lists!inner(user_id)')
+    .eq('exercise_id', exerciseId)
+    .eq('exercise_lists.user_id', user.id)
+
+  return (data ?? []).map((row) => row.list_id)
+}
+
 export async function fetchListItems(listId: string): Promise<string[]> {
   const supabase = await createClient()
   const { data } = await supabase

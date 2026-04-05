@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ListPlus, Plus, Check } from 'lucide-react'
+import { ListPlus, Plus, Check, Minus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -9,7 +9,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { useUserLists, useCreateList, useAddToList, useUser } from '@/lib/supabase/hooks'
+import {
+  useUserLists,
+  useCreateList,
+  useAddToList,
+  useRemoveFromList,
+  useExerciseListMembership,
+  useUser,
+} from '@/lib/supabase/hooks'
 
 type Props = {
   exerciseId: string
@@ -17,12 +24,13 @@ type Props = {
 
 export default function AddToListButton({ exerciseId }: Props) {
   const [newListName, setNewListName] = useState('')
-  const [addedToList, setAddedToList] = useState<string | null>(null)
 
   const { isLoggedIn } = useUser()
   const { data: lists = [] } = useUserLists()
+  const { data: memberListIds = [] } = useExerciseListMembership(exerciseId)
   const { mutate: createList, isPending: isCreating } = useCreateList()
   const { mutate: addToList, isPending: isAdding } = useAddToList()
+  const { mutate: removeFromList, isPending: isRemoving } = useRemoveFromList()
 
   if (!isLoggedIn) return null
 
@@ -33,15 +41,16 @@ export default function AddToListButton({ exerciseId }: Props) {
       onSuccess: (list) => {
         addToList({ listId: list.id, exerciseId })
         setNewListName('')
-        setAddedToList(list.id)
       },
     })
   }
 
-  function handleAddToList(listId: string) {
-    addToList({ listId, exerciseId }, {
-      onSuccess: () => setAddedToList(listId),
-    })
+  function handleToggle(listId: string) {
+    if (memberListIds.includes(listId)) {
+      removeFromList({ listId, exerciseId })
+    } else {
+      addToList({ listId, exerciseId })
+    }
   }
 
   return (
@@ -52,24 +61,29 @@ export default function AddToListButton({ exerciseId }: Props) {
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-64">
-        <p className="text-xs font-medium text-muted-foreground mb-2">Lägg till i lista</p>
+        <p className="text-xs font-medium text-muted-foreground mb-2">Dina listor</p>
 
         {lists.length > 0 && (
           <ul className="flex flex-col gap-1 mb-3">
-            {lists.map((list) => (
-              <li key={list.id}>
-                <button
-                  onClick={() => handleAddToList(list.id)}
-                  disabled={isAdding}
-                  className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm hover:bg-muted transition-colors"
-                >
-                  {list.name}
-                  {addedToList === list.id && (
-                    <Check className="h-3.5 w-3.5 text-green-500" />
-                  )}
-                </button>
-              </li>
-            ))}
+            {lists.map((list) => {
+              const isMember = memberListIds.includes(list.id)
+              return (
+                <li key={list.id}>
+                  <button
+                    onClick={() => handleToggle(list.id)}
+                    disabled={isAdding || isRemoving}
+                    className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm hover:bg-muted transition-colors cursor-pointer disabled:opacity-50"
+                  >
+                    <span>{list.name}</span>
+                    {isMember ? (
+                      <Check className="h-3.5 w-3.5 text-green-500" />
+                    ) : (
+                      <Minus className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100" />
+                    )}
+                  </button>
+                </li>
+              )
+            })}
           </ul>
         )}
 
