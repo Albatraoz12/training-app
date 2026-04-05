@@ -46,12 +46,10 @@ export default function AddToListButton({ exerciseId }: Props) {
 
   return (
     <Popover>
-      <PopoverTrigger
-        render={
-          <Button variant="ghost" size="icon" aria-label="Lägg till i lista" />
-        }
-      >
-        <ListPlus className="h-4 w-4 text-muted-foreground" />
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" aria-label="Lägg till i lista">
+          <ListPlus className="h-4 w-4 text-muted-foreground" />
+        </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-64">
         <p className="text-xs font-medium text-muted-foreground mb-2">Lägg till i lista</p>

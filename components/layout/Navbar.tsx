@@ -21,22 +21,26 @@ export default function Navbar({ isLoggedIn }: Props) {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-2">
-          <Button variant="ghost" nativeButton={false} render={<Link href="/search" />}>
-            <Search className="h-4 w-4" />
-            Search
+          <Button variant="ghost" asChild>
+            <Link href="/search">
+              <Search className="h-4 w-4" />
+              Search
+            </Link>
           </Button>
           {isLoggedIn ? (
-            <Button nativeButton={false} render={<Link href="/dashboard" />}>
-              <LayoutDashboard className="h-4 w-4" />
-              Dashboard
+            <Button asChild>
+              <Link href="/dashboard">
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </Link>
             </Button>
           ) : (
             <>
-              <Button variant="ghost" nativeButton={false} render={<Link href="/sign-in" />}>
-                Sign in
+              <Button variant="ghost" asChild>
+                <Link href="/sign-in">Sign in</Link>
               </Button>
-              <Button nativeButton={false} render={<Link href="/sign-up" />}>
-                Sign up
+              <Button asChild>
+                <Link href="/sign-up">Sign up</Link>
               </Button>
             </>
           )}
@@ -47,23 +51,27 @@ export default function Navbar({ isLoggedIn }: Props) {
           <SheetTrigger className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground">
             <Menu className="h-5 w-5" />
           </SheetTrigger>
-          <SheetContent side="right" className="flex flex-col gap-3 pt-10 data-[side=right]:w-full data-[side=right]:sm:max-w-full">
-            <Button variant="ghost" className="justify-start gap-2" nativeButton={false} render={<Link href="/search" />}>
-              <Search className="h-4 w-4" />
-              Sök övning
+          <SheetContent side="right" className="flex flex-col gap-3 pt-10 w-full sm:max-w-full">
+            <Button variant="ghost" className="justify-start gap-2" asChild>
+              <Link href="/search">
+                <Search className="h-4 w-4" />
+                Sök övning
+              </Link>
             </Button>
             {isLoggedIn ? (
-              <Button className="justify-start" nativeButton={false} render={<Link href="/dashboard" />}>
-                <LayoutDashboard className="h-4 w-4" />
-                Dashboard
+              <Button className="justify-start" asChild>
+                <Link href="/dashboard">
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Link>
               </Button>
             ) : (
               <>
-                <Button variant="ghost" className="justify-start" nativeButton={false} render={<Link href="/sign-in" />}>
-                  Sign in
+                <Button variant="ghost" className="justify-start" asChild>
+                  <Link href="/sign-in">Sign in</Link>
                 </Button>
-                <Button className="justify-start" nativeButton={false} render={<Link href="/sign-up" />}>
-                  Sign up
+                <Button className="justify-start" asChild>
+                  <Link href="/sign-up">Sign up</Link>
                 </Button>
               </>
             )}

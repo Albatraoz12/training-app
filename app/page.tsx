@@ -19,11 +19,11 @@ export default function Home() {
           Sök bland hundratals övningar, spara dina favoriter och bygg egna träningslistor — allt på ett ställe.
         </p>
         <div className="flex gap-3">
-          <Button render={<Link href="/search" />} nativeButton={false}>
-            Sök övningar
+          <Button asChild>
+            <Link href="/search">Sök övningar</Link>
           </Button>
-          <Button variant="outline" render={<Link href="/sign-up" />} nativeButton={false}>
-            Skapa konto
+          <Button variant="outline" asChild>
+            <Link href="/sign-up">Skapa konto</Link>
           </Button>
         </div>
       </section>
@@ -71,8 +71,8 @@ export default function Home() {
         <p className="text-muted-foreground">
           Inget kreditkort. Inget krångel. Skapa ett konto och börja bygga ditt program idag.
         </p>
-        <Button render={<Link href="/sign-up" />} nativeButton={false}>
-          Skapa konto
+        <Button asChild>
+          <Link href="/sign-up">Skapa konto</Link>
         </Button>
       </section>
 
