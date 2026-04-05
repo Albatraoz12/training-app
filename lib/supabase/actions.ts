@@ -58,6 +58,35 @@ export async function fetchUserLists(): Promise<ExerciseList[]> {
   return data ?? []
 }
 
+export async function fetchListItems(listId: string): Promise<string[]> {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('exercise_list_items')
+    .select('exercise_id')
+    .eq('list_id', listId)
+
+  return (data ?? []).map((i) => i.exercise_id)
+}
+
+export async function fetchUserListsWithItems(): Promise<(ExerciseList & { exerciseIds: string[] })[]> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return []
+
+  const { data } = await supabase
+    .from('exercise_lists')
+    .select('id, name, created_at, exercise_list_items(exercise_id)')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+
+  return (data ?? []).map((list) => ({
+    id: list.id,
+    name: list.name,
+    created_at: list.created_at,
+    exerciseIds: (list.exercise_list_items as { exercise_id: string }[]).map((i) => i.exercise_id),
+  }))
+}
+
 export async function createList(name: string): Promise<ExerciseList> {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
