@@ -17,9 +17,7 @@ export default async function DashboardPage() {
     .eq('id', user!.id)
     .single()
 
-  const name = profile?.first_name
-    ? `${profile.first_name} ${profile.last_name}`
-    : user!.email
+  const name = profile?.first_name ?? user!.email
 
   const [favoriteIds, lists] = await Promise.all([
     fetchUserFavorites(),
@@ -39,9 +37,17 @@ export default async function DashboardPage() {
   return (
     <main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-10">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="flex flex-col gap-1">
           <h1 className="text-2xl font-bold">Välkommen, {name}!</h1>
-          <p className="text-sm text-muted-foreground">{user!.email}</p>
+          <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+            {profileData.age && <span>{profileData.age} år</span>}
+            {profileData.gender && (
+              <span className="capitalize">{profileData.gender}</span>
+            )}
+            {!profileData.age && !profileData.gender && (
+              <span>{user!.email}</span>
+            )}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <ProfileSheet profile={profileData} />
