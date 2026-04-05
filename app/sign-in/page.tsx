@@ -3,7 +3,7 @@ import SignInForm from '@/components/auth/SignInForm'
 
 export default function SignInPage() {
   return (
-    <main className="flex flex-1 items-center justify-center px-4 py-12">
+    <main className="flex flex-1 items-center justify-center py-12">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Logga in</CardTitle>

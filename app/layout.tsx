@@ -36,7 +36,9 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col">
           <QueryProvider>
             <Navbar isLoggedIn={!!user} />
-            {children}
+            <div className="mx-auto w-[90%] md:w-[80%] xl:w-[70%]">
+              {children}
+            </div>
           </QueryProvider>
         </body>
     </html>

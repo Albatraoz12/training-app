@@ -38,7 +38,7 @@ export default async function ListPage({ params }: Props) {
   }
 
   return (
-    <main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-10">
+    <main className="flex flex-col gap-8 py-10">
       <div className="flex flex-col gap-1">
         <Link
           href="/dashboard"

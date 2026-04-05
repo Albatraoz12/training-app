@@ -7,7 +7,7 @@ export default function Home() {
     <main className="flex flex-col">
 
       {/* Hero */}
-      <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-24 text-center">
+      <section className="flex flex-col items-center gap-6 py-24 text-center">
         <div className="flex items-center gap-2 rounded-full border border-border px-4 py-1.5 text-sm text-muted-foreground">
           <Dumbbell className="h-4 w-4" />
           Över 1 300 övningar
@@ -28,9 +28,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="border-t border-border bg-muted/40">
-        <div className="mx-auto grid max-w-5xl gap-px px-4 py-16 sm:grid-cols-3">
+      {/* Features — full width breakout */}
+      <section className="w-screen -translate-x-1/2 relative left-1/2 border-t border-border bg-muted/40">
+        <div className="mx-auto grid w-[90%] gap-px py-16 md:w-[80%] xl:w-[70%] sm:grid-cols-3">
 
           <div className="flex flex-col gap-3 rounded-xl bg-background p-8">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
@@ -66,7 +66,7 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-4 py-24 text-center">
+      <section className="flex flex-col items-center gap-4 py-24 text-center">
         <h2 className="text-3xl font-bold tracking-tight">Kom igång gratis</h2>
         <p className="text-muted-foreground">
           Inget kreditkort. Inget krångel. Skapa ett konto och börja bygga ditt program idag.
