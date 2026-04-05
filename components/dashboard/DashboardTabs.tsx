@@ -19,7 +19,7 @@ function ExerciseMiniCard({ exercise }: { exercise: Exercise }) {
       <img
         src={exercise.gifUrl}
         alt={exercise.name}
-        className="h-36 w-full object-cover"
+        className="h-24 w-full object-cover"
       />
       <p className="line-clamp-2 px-2 py-2 text-xs font-medium capitalize group-hover:underline">
         {exercise.name}
@@ -56,7 +56,7 @@ export default function DashboardTabs({ favorites, lists }: Props) {
             Du har inga gillade övningar än.
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 md:grid-cols-5">
             {favorites.map((ex) => (
               <ExerciseMiniCard key={ex.id} exercise={ex} />
             ))}

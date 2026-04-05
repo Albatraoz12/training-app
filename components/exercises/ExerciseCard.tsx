@@ -15,7 +15,7 @@ export default function ExerciseCard({ exercise }: Props) {
         <img
           src={exercise.gifUrl}
           alt={exercise.name}
-          className="h-48 w-full object-cover"
+          className="h-32 w-full object-cover"
         />
         <CardHeader className="pb-2">
           <CardTitle className="capitalize text-base group-hover:underline">

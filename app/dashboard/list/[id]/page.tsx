@@ -56,7 +56,7 @@ export default async function ListPage({ params }: Props) {
       {exercises.length === 0 ? (
         <p className="text-sm text-muted-foreground">Listan är tom.</p>
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 md:grid-cols-5">
           {exercises.map((ex) => (
             <div key={ex.id} className="relative">
               <Link
@@ -66,7 +66,7 @@ export default async function ListPage({ params }: Props) {
                 <img
                   src={ex.gifUrl}
                   alt={ex.name}
-                  className="h-36 w-full object-cover"
+                  className="h-24 w-full object-cover"
                 />
                 <p className="line-clamp-2 px-2 py-2 text-xs font-medium capitalize hover:underline">
                   {ex.name}
