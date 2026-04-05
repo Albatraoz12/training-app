@@ -5,6 +5,7 @@ import { fetchUserFavorites, fetchUserLists } from '@/lib/supabase/actions'
 import { fetchExerciseById } from '@/lib/exercisedb/actions'
 import type { Exercise } from '@/lib/exercisedb/types'
 import DashboardTabs from '@/components/dashboard/DashboardTabs'
+import ProfileSheet from '@/components/dashboard/ProfileSheet'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -12,7 +13,7 @@ export default async function DashboardPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('first_name, last_name')
+    .select('first_name, last_name, age, gender')
     .eq('id', user!.id)
     .single()
 
@@ -33,6 +34,8 @@ export default async function DashboardPage() {
     results.forEach((ex) => { if (ex) favoriteExercises.push(ex) })
   }
 
+  const profileData = profile ?? { first_name: null, last_name: null, age: null, gender: null }
+
   return (
     <main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-10">
       <div className="flex items-center justify-between">
@@ -40,9 +43,12 @@ export default async function DashboardPage() {
           <h1 className="text-2xl font-bold">Välkommen, {name}!</h1>
           <p className="text-sm text-muted-foreground">{user!.email}</p>
         </div>
-        <form action={signOut}>
-          <Button variant="outline" type="submit">Logga ut</Button>
-        </form>
+        <div className="flex items-center gap-2">
+          <ProfileSheet profile={profileData} />
+          <form action={signOut}>
+            <Button variant="outline" type="submit">Logga ut</Button>
+          </form>
+        </div>
       </div>
 
       <DashboardTabs favorites={favoriteExercises} lists={lists} />

@@ -2,6 +2,29 @@
 
 import { createClient } from './server'
 
+// ---- Profile ----
+
+type ProfileState = { error: string } | { success: true } | null
+
+export async function updateProfile(_prevState: ProfileState, formData: FormData): Promise<ProfileState> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Inte inloggad.' }
+
+  const firstName = formData.get('first_name') as string
+  const lastName = formData.get('last_name') as string
+  const age = Number(formData.get('age'))
+  const gender = formData.get('gender') as string
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ first_name: firstName, last_name: lastName, age, gender })
+    .eq('id', user.id)
+
+  if (error) return { error: error.message }
+  return { success: true }
+}
+
 // ---- Favorites ----
 
 export async function fetchUserFavorites(): Promise<string[]> {

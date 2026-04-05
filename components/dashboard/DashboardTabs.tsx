@@ -5,7 +5,6 @@ import { ListMusic } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Exercise } from "@/lib/exercisedb/types";
 import type { ExerciseList } from "@/lib/supabase/actions";
-
 type Props = {
   favorites: Exercise[];
   lists: ExerciseList[];
@@ -85,6 +84,7 @@ export default function DashboardTabs({ favorites, lists }: Props) {
           </div>
         )}
       </TabsContent>
+
     </Tabs>
   );
 }
