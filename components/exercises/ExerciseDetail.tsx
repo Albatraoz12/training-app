@@ -1,6 +1,8 @@
 'use client'
 
 import { useExerciseById } from '@/lib/exercisedb/hooks'
+import FavoriteButton from './FavoriteButton'
+import AddToListButton from './AddToListButton'
 
 type Props = {
   id: string
@@ -28,7 +30,13 @@ export default function ExerciseDetail({ id }: Props) {
       {/* Info */}
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold capitalize">{exercise.name}</h1>
+          <div className="flex items-center justify-between gap-2">
+            <h1 className="text-3xl font-bold capitalize">{exercise.name}</h1>
+            <div className="flex shrink-0 items-center gap-1">
+              <FavoriteButton exerciseId={exercise.id} />
+              <AddToListButton exerciseId={exercise.id} />
+            </div>
+          </div>
           <div className="flex flex-wrap gap-2">
             <span className="rounded-full bg-muted px-3 py-1 text-sm capitalize text-muted-foreground">
               {exercise.bodyPart}
