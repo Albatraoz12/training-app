@@ -65,6 +65,7 @@ export type ExerciseList = {
   id: string
   name: string
   created_at: string
+  exerciseCount: number
 }
 
 export async function fetchUserLists(): Promise<ExerciseList[]> {
@@ -74,11 +75,16 @@ export async function fetchUserLists(): Promise<ExerciseList[]> {
 
   const { data } = await supabase
     .from('exercise_lists')
-    .select('id, name, created_at')
+    .select('id, name, created_at, exercise_list_items(count)')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
-  return data ?? []
+  return (data ?? []).map((list) => ({
+    id: list.id,
+    name: list.name,
+    created_at: list.created_at,
+    exerciseCount: (list.exercise_list_items as unknown as { count: number }[])[0]?.count ?? 0,
+  }))
 }
 
 export async function fetchListItems(listId: string): Promise<string[]> {
@@ -106,6 +112,7 @@ export async function fetchUserListsWithItems(): Promise<(ExerciseList & { exerc
     id: list.id,
     name: list.name,
     created_at: list.created_at,
+    exerciseCount: 0,
     exerciseIds: (list.exercise_list_items as { exercise_id: string }[]).map((i) => i.exercise_id),
   }))
 }

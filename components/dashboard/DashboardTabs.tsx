@@ -79,6 +79,9 @@ export default function DashboardTabs({ favorites, lists }: Props) {
               >
                 <ListMusic className="h-5 w-5 shrink-0 text-muted-foreground" />
                 <span className="font-medium">{list.name}</span>
+                {list.exerciseCount > 0 && (
+                  <span className="ml-auto text-xs text-muted-foreground">({list.exerciseCount})</span>
+                )}
               </Link>
             ))}
           </div>
