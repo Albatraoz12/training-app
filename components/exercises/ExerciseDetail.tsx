@@ -3,6 +3,7 @@
 import { useExerciseById } from '@/lib/exercisedb/hooks'
 import FavoriteButton from './FavoriteButton'
 import AddToListButton from './AddToListButton'
+import ExerciseDetailSkeleton from './ExerciseDetailSkeleton'
 
 type Props = {
   id: string
@@ -11,7 +12,7 @@ type Props = {
 export default function ExerciseDetail({ id }: Props) {
   const { data: exercise, isLoading, error } = useExerciseById(id)
 
-  if (isLoading) return <p className="text-center text-muted-foreground">Laddar...</p>
+  if (isLoading) return <ExerciseDetailSkeleton />
   if (error) return <p className="text-center text-destructive">Något gick fel. Försök igen.</p>
   if (!exercise) return null
 

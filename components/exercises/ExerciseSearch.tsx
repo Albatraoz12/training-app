@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select'
 import { Search } from 'lucide-react'
 import ExerciseList from './ExerciseList'
+import ExerciseCardSkeleton from './ExerciseCardSkeleton'
 
 export default function ExerciseSearch() {
   const { query, setQuery, bodyPart, submitSearch, selectBodyPart, data, isLoading, error, hasActiveSearch, page, goToPage, hasNextPage } =
@@ -57,7 +58,11 @@ export default function ExerciseSearch() {
       </div>
 
       {isLoading && (
-        <p className="text-center text-muted-foreground">Laddar...</p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <ExerciseCardSkeleton key={i} />
+          ))}
+        </div>
       )}
       {error && (
         <p className="text-center text-destructive">Något gick fel. Försök igen.</p>
