@@ -15,7 +15,7 @@ import { Search } from 'lucide-react'
 import ExerciseList from './ExerciseList'
 
 export default function ExerciseSearch() {
-  const { query, setQuery, bodyPart, submitSearch, selectBodyPart, data, isLoading, error, hasActiveSearch } =
+  const { query, setQuery, bodyPart, submitSearch, selectBodyPart, data, isLoading, error, hasActiveSearch, page, goToPage, hasNextPage } =
     useExerciseSearch()
 
   const { data: bodyParts = [] } = useBodyParts()
@@ -63,7 +63,30 @@ export default function ExerciseSearch() {
         <p className="text-center text-destructive">Något gick fel. Försök igen.</p>
       )}
       {!isLoading && !error && hasActiveSearch && (
-        <ExerciseList exercises={data} />
+        <div className="flex flex-col gap-6">
+          <ExerciseList exercises={data} />
+          {(page > 0 || hasNextPage) && (
+            <div className="flex items-center justify-center gap-4">
+              <Button
+                variant="outline"
+                onClick={() => goToPage(page - 1)}
+                disabled={page === 0}
+                className="cursor-pointer"
+              >
+                Föregående
+              </Button>
+              <span className="text-sm text-muted-foreground">Sida {page + 1}</span>
+              <Button
+                variant="outline"
+                onClick={() => goToPage(page + 1)}
+                disabled={!hasNextPage}
+                className="cursor-pointer"
+              >
+                Nästa
+              </Button>
+            </div>
+          )}
+        </div>
       )}
       {!hasActiveSearch && (
         <p className="text-center text-muted-foreground">

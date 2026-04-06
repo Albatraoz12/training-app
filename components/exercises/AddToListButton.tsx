@@ -14,7 +14,7 @@ import {
   useCreateList,
   useAddToList,
   useRemoveFromList,
-  useExerciseListMembership,
+  useAllListMemberships,
   useUser,
 } from '@/lib/supabase/hooks'
 
@@ -27,7 +27,8 @@ export default function AddToListButton({ exerciseId }: Props) {
 
   const { isLoggedIn } = useUser()
   const { data: lists = [] } = useUserLists()
-  const { data: memberListIds = [] } = useExerciseListMembership(exerciseId)
+  const { data: allMemberships = [] } = useAllListMemberships()
+  const memberListIds = allMemberships.filter((m) => m.exercise_id === exerciseId).map((m) => m.list_id)
   const { mutate: createList, isPending: isCreating } = useCreateList()
   const { mutate: addToList, isPending: isAdding } = useAddToList()
   const { mutate: removeFromList, isPending: isRemoving } = useRemoveFromList()

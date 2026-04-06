@@ -57,6 +57,7 @@ export function useExercisesByName(name: string) {
     queryKey: ['exercises', 'name', name],
     queryFn: () => fetchExercisesByName(name),
     enabled: !!name,
+    staleTime: 5 * 60 * 1000,
   })
 }
 
@@ -68,6 +69,8 @@ export function useExerciseById(id: string) {
   })
 }
 
+const PAGE_SIZE = 12
+
 export function useExerciseSearch() {
   const router = useRouter()
   const pathname = usePathname()
@@ -75,14 +78,21 @@ export function useExerciseSearch() {
 
   const search = searchParams.get('q') ?? ''
   const bodyPart = searchParams.get('bodyPart') ?? ''
+  const page = Number(searchParams.get('page') ?? '0')
 
   // Lokalt state enbart för det kontrollerade input-fältet
   const [query, setQuery] = useState(search)
 
+  const offset = page * PAGE_SIZE
+
   const nameQuery = useExercisesByName(search)
-  const bodyPartQuery = useExercisesByBodyPart(bodyPart)
+  const bodyPartQuery = useExercisesByBodyPart(bodyPart, PAGE_SIZE, offset)
 
   const active = search ? nameQuery : bodyPart ? bodyPartQuery : null
+  const allNameData = nameQuery.data ?? []
+  const data = search
+    ? allNameData.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+    : active?.data ?? []
 
   function submitSearch(value: string) {
     const q = value.trim()
@@ -99,6 +109,16 @@ export function useExerciseSearch() {
     router.push(`${pathname}?${params.toString()}`)
   }
 
+  function goToPage(newPage: number) {
+    const params = new URLSearchParams(searchParams.toString())
+    if (newPage === 0) {
+      params.delete('page')
+    } else {
+      params.set('page', String(newPage))
+    }
+    router.push(`${pathname}?${params.toString()}`)
+  }
+
   return {
     query,
     setQuery,
@@ -106,9 +126,12 @@ export function useExerciseSearch() {
     bodyPart,
     submitSearch,
     selectBodyPart,
-    data: active?.data ?? [],
+    data,
     isLoading: active?.isLoading ?? false,
     error: active?.error ?? null,
     hasActiveSearch: !!(search || bodyPart),
+    page,
+    goToPage,
+    hasNextPage: data.length === PAGE_SIZE,
   }
 }
