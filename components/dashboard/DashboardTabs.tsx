@@ -32,25 +32,27 @@ function ExerciseMiniCard({ exercise }: { exercise: Exercise }) {
 export default function DashboardTabs({ favorites, lists }: Props) {
   return (
     <Tabs defaultValue="lists">
-      <TabsList>
-        <TabsTrigger value="favorites" className="cursor-pointer">
-          Gillade övningar
+      <TabsList className="w-full">
+        <TabsTrigger value="favorites" className="cursor-pointer flex-1 text-xs sm:text-sm">
+          <span className="truncate">Gillade</span>
+          <span className="hidden sm:inline truncate">&nbsp;övningar</span>
           {favorites.length > 0 && (
             <span className="ml-1.5 rounded-full bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
               {favorites.length}
             </span>
           )}
         </TabsTrigger>
-        <TabsTrigger value="lists" className="cursor-pointer">
-          Mina listor
+        <TabsTrigger value="lists" className="cursor-pointer flex-1 text-xs sm:text-sm">
+          <span className="truncate">Mina listor</span>
           {lists.length > 0 && (
             <span className="ml-1.5 rounded-full bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
               {lists.length}
             </span>
           )}
         </TabsTrigger>
-        <TabsTrigger value="history" className="cursor-pointer">
-          Träningshistorik
+        <TabsTrigger value="history" className="cursor-pointer flex-1 text-xs sm:text-sm">
+          <span className="hidden sm:inline truncate">Träningshistorik</span>
+          <span className="sm:hidden truncate">Historik</span>
         </TabsTrigger>
       </TabsList>
 
