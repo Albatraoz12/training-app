@@ -48,9 +48,17 @@ export async function endWorkoutSession(sessionId: string): Promise<void> {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
+  const endedAt = new Date()
+  const name = endedAt.toLocaleDateString('sv-SE', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+
   const { error } = await supabase
     .from('workout_sessions')
-    .update({ ended_at: new Date().toISOString() })
+    .update({ ended_at: endedAt.toISOString(), name })
     .eq('id', sessionId)
     .eq('user_id', user.id)
 
