@@ -1,6 +1,7 @@
 "use client";
 
-import { Dumbbell } from "lucide-react";
+import Link from "next/link";
+import { Dumbbell, ChevronRight } from "lucide-react";
 import { useWorkoutHistory } from "@/lib/supabase/workout-hooks";
 
 function formatDate(iso: string) {
@@ -45,9 +46,10 @@ export default function WorkoutHistory() {
   return (
     <div className="flex flex-col gap-3">
       {sessions.map((session) => (
-        <div
+        <Link
           key={session.id}
-          className="flex items-center gap-4 rounded-xl border border-border px-4 py-4"
+          href={`/dashboard/workout/${session.id}`}
+          className="flex items-center gap-4 rounded-xl border border-border px-4 py-4 transition-shadow hover:shadow-md"
         >
           <Dumbbell className="h-5 w-5 shrink-0 text-muted-foreground" />
           <div className="flex flex-col gap-0.5">
@@ -59,7 +61,8 @@ export default function WorkoutHistory() {
               )}
             </span>
           </div>
-        </div>
+          <ChevronRight className="ml-auto h-4 w-4 text-muted-foreground" />
+        </Link>
       ))}
     </div>
   );
