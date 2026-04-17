@@ -10,6 +10,7 @@ import { fetchExerciseById } from "@/lib/exercisedb/actions";
 import type { Exercise } from "@/lib/exercisedb/types";
 import RenameSessionInput from "@/components/workout/RenameSessionInput";
 import WorkoutSummaryClient from "@/components/workout/WorkoutSummaryClient";
+import DeleteSessionButton from "@/components/workout/DeleteSessionButton";
 
 type Props = {
   params: Promise<{ sessionId: string }>;
@@ -71,7 +72,10 @@ export default async function WorkoutSummaryPage({ params }: Props) {
           Tillbaka till dashboard
         </Link>
 
-        <RenameSessionInput sessionId={session.id} initialName={session.name} />
+        <div className="flex items-center gap-2">
+          <RenameSessionInput sessionId={session.id} initialName={session.name} />
+          <DeleteSessionButton sessionId={session.id} />
+        </div>
 
         <p className="text-sm text-muted-foreground capitalize">
           {formatDate(session.started_at)}
