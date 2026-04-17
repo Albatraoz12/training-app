@@ -7,6 +7,7 @@ import { fetchExerciseById } from '@/lib/exercisedb/actions'
 import type { Exercise } from '@/lib/exercisedb/types'
 import RemoveFromListButton from '@/components/exercises/RemoveFromListButton'
 import RenameListInput from '@/components/exercises/RenameListInput'
+import StartWorkoutButton from '@/components/workout/StartWorkoutButton'
 
 type Props = {
   params: Promise<{ id: string }>
@@ -47,7 +48,12 @@ export default async function ListPage({ params }: Props) {
           <ChevronLeft className="h-4 w-4" />
           Tillbaka till dashboard
         </Link>
-        <RenameListInput listId={id} initialName={list.name} />
+        <div className="flex items-center justify-between gap-4">
+          <RenameListInput listId={id} initialName={list.name} />
+          {exercises.length > 0 && (
+            <StartWorkoutButton listId={id} listName={list.name} />
+          )}
+        </div>
         <p className="text-sm text-muted-foreground">
           {exercises.length} {exercises.length === 1 ? 'övning' : 'övningar'}
         </p>
